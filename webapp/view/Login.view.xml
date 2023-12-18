@@ -1,0 +1,35 @@
+<mvc:View controllerName="qrscan.controller.Login" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m"
+    xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core">
+    <Shell id="shell">
+        <App id="app">
+            <pages>
+                <Page id="page" title="Asset Tracking Admin">
+                    <content>
+                        <VBox height="100%" alignItems="Center">
+                            <HBox height="100%" alignItems="Center">
+                                <Image height="100px" class="sapUiLargeMarginEnd"
+                                    src="https://vellas.net/wp-content/uploads/2023/06/Vellas-Logo-1.png"/>
+                                <IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" selectedKey="mail" class="sapUiResponsiveContentPadding">
+                                    <items>
+                                        <IconTabFilter text="Email Login" key="mail">
+                                            <VBox id="idMailDetails">
+                                                <Label design="Bold" text="Enter Registered Email ID" required="true"/>
+                                                <Input width="300px" id="idu_admin" required="true" placeholder="username@mail.com" submit="onEmailSignin"/>
+                                                <Label design="Bold" text="Enter Password" required="true"/>
+                                                <Input width="300px" id="idp_admin" required="true" type="Password" placeholder="*****" submit="onEmailSignin"/>
+                                                <HBox>
+                                                    <Button width="145px" class="sapUiTinyMarginEnd" text="Sign In" press="onEmailSignin"/>
+                                                    <Button width="145px" text="Reset" press="onReset"/>
+                                                </HBox>
+                                            </VBox>
+                                        </IconTabFilter>
+                                    </items>
+                                </IconTabBar>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </Page>
+            </pages>
+        </App>
+    </Shell>
+</mvc:View>

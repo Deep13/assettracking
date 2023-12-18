@@ -1,0 +1,8 @@
+/* Enter your custom styles here */
+@media print {
+    .page {
+      page-break-after: always;
+      position: relative;
+      height: 100vh;
+    }
+  }

@@ -1,0 +1,60 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.ui.layout.form" xmlns="sap.m"
+  controllerName="qrscan.controller.CreateUsers">
+  <!-- Page for Creating Users -->
+  <Page title="Asset Tracking Admin">
+    <content>
+      <VBox>
+        <!-- Form for creating new users -->
+        <f:SimpleForm
+          id="formQRCode"
+          layout="ResponsiveGridLayout"
+          title="Create Users"
+          editable="true"
+          labelSpanL="3"
+          labelSpanM="3"
+          emptySpanL="4"
+          emptySpanM="4"
+          columnsL="1"
+          columnsM="1">
+          <f:content>
+            <Label text="Name" />
+            <Input id="nameInput" />
+            <Label text="Username" />
+            <Input id="emailInput" />
+            <Label text="Password" />
+            <Input id="passwordInput" type="Password" />
+            <Button text="Create" press="onCreateUser" />
+          </f:content>
+        </f:SimpleForm>
+        <!-- Table for displaying existing users -->
+        <Table id="userTable" mode="SingleSelectMaster" items="{/results}">
+          <headerToolbar>
+            <Toolbar>
+              <Title text="Users" />
+            </Toolbar>
+          </headerToolbar>
+          <columns>
+            <Column>
+              <Text text="Name" />
+            </Column>
+            <Column>
+              <Text text="Username" />
+            </Column>
+            <!-- <Column>
+                  <Text text="Remove User" />
+                </Column> -->
+          </columns>
+          <items>
+            <ColumnListItem>
+              <cells>
+                <Text text="{name}" />
+                <Text text="{username}" />
+                <!-- <Button text="Delete" press="onDeleteUser" /> -->
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </VBox>
+    </content>
+  </Page>
+</mvc:View>

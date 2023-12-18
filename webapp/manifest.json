@@ -1,0 +1,121 @@
+{
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "qrscan",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "ui5template.basicSAPUI5ApplicationProject",
+      "version": "1.40.12"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.65.6",
+      "libs": {
+        "sap.ui.layout": {},
+        "sap.ui.core": {},
+        "sap.m": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "qrscan.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "qrscan.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "Login",
+          "pattern": "",
+          "target": ["Login"]
+        },
+        {
+          "name": "Main",
+          "pattern": "Main",
+          "target": ["Main"]
+        },
+        {
+          "name": "CreateUsers",
+          "pattern": "CreateUsers",
+          "target": ["CreateUsers"]
+        }
+      ],
+      "targets": {
+        "Login": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Login",
+          "viewName": "Login"
+        },
+        "Main": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Main",
+          "viewName": "Main"
+        },
+        "CreateUsers": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "CreateUsers",
+          "viewName": "CreateUsers"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "qrscan.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}
