@@ -6,15 +6,14 @@
     xmlns:m="sap.m">
     <m:Page id="page" title="Asset Tracking Admin">
         <m:customHeader>
-            <m:Bar>
-                <m:contentMiddle>
-                    <m:Title text="Asset Tracking Admin" />
-                </m:contentMiddle>
-                <m:contentRight>
-                    <m:Button icon="sap-icon://user-edit" text="Create Users" press='onUsersCreate' />
-                    <m:Button icon="sap-icon://log" text="Logout" press="onLogout" />
-                </m:contentRight>
-            </m:Bar>
+            <m:OverflowToolbar>
+                <m:Title text="Welcome,{UserModel>/username}" />
+                <m:ToolbarSpacer />
+                <m:Title text="Asset Tracking Admin" />
+                <m:ToolbarSpacer />
+                <m:Button icon="sap-icon://user-edit" text="Create Users" press='onUsersCreate' />
+                <m:Button icon="sap-icon://log" text="Logout" press="onLogout" />
+            </m:OverflowToolbar>
         </m:customHeader>
         <m:content>
             <f:SimpleForm
@@ -55,6 +54,9 @@
                 </f:content>
             </f:SimpleForm>
             <!-- Step 3: Bind data in table -->
+            <core:HTML
+                content='&lt;div style=&quot;position: absolute;top: 0px;bottom: 0px;opacity: 0;&quot; id=&quot;qrimage&quot;&gt;&lt;/div&gt;'>
+            </core:HTML>
             <m:Table id="idQRCodeTable" items="{/items}" mode="MultiSelect">
                 <m:headerToolbar>
                     <m:Toolbar>
@@ -80,7 +82,20 @@
                         <m:cells>
                             <m:ObjectIdentifier title="{locationData}" />
                             <m:ObjectIdentifier title="{assetData}" />
-                            <m:Image src="{qrCodeUrl}" width="100px" height="100px" />
+                            <m:Image src="{qrCodeUrl}">
+                                <m:detailBox>
+                                    <m:LightBox>
+                                        <m:LightBoxItem
+                                            imageSrc="{qrCodeUrl}"
+                                            alt="Beamer"
+                                            subtitle="Location:{locationData}"
+                                            title="Asset:{assetData}" />
+                                    </m:LightBox>
+                                </m:detailBox>
+                            </m:Image>
+                            <!-- <m:Button
+                                text="ShowQR"
+                                press="onViewQR" /> -->
                         </m:cells>
                     </m:ColumnListItem>
                 </m:items>

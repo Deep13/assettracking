@@ -13,11 +13,64 @@ sap.ui.define([
             onInit: function () {
                 var oModel = new sap.ui.model.json.JSONModel();
                 this.getView().setModel(oModel);
+                var oModel = this.getOwnerComponent().getModel("UserModel");
+                this.getView().setModel(oModel, "UserModel");
                 this.flag = true;
+                this.checkAuth();
             },
 
             checkAuth: function () {
                 var that = this;
+                sap.ui.core.BusyIndicator.show();
+                var userCred = localStorage.getItem('user');
+                if (userCred) {
+                    var sCred = window.atob(userCred);
+                    if (sCred) {
+                        var credentials = JSON.parse(sCred);
+                        $.ajax({
+                            url: './php/index.php',
+                            type: "POST",
+                            data: {
+                                method: "loginCheck",
+                                data: JSON.stringify({ username: credentials.username, pwd: credentials.pass })
+                            },
+                            dataType: "json",
+                            success: function (dataClient) {
+                                sap.ui.core.BusyIndicator.hide();
+                                if (dataClient) {
+                                    if (dataClient[0] == 'Login unsuccesfull') {
+                                        localStorage.removeItem('user');
+                                        that.oRouter = that.getOwnerComponent().getRouter();
+                                        that.oRouter.navTo("Login");
+                                    }
+                                    else {
+
+                                        var json = new sap.ui.model.json.JSONModel({ username: credentials.username });
+                                        that.getView().setModel(json, "UserModel");
+                                    }
+                                }
+
+                            },
+                            error: function (request, error) {
+                                sap.ui.core.BusyIndicator.hide();
+                                localStorage.removeItem('user');
+                                that.oRouter = that.getOwnerComponent().getRouter();
+                                that.oRouter.navTo("Login");
+                            },
+                        });
+                    }
+                    else {
+                        sap.ui.core.BusyIndicator.hide();
+                        localStorage.removeItem('user');
+                        that.oRouter = that.getOwnerComponent().getRouter();
+                        that.oRouter.navTo("Login");
+                    }
+                }
+                else {
+                    sap.ui.core.BusyIndicator.hide();
+                    that.oRouter = that.getOwnerComponent().getRouter();
+                    that.oRouter.navTo("Login");
+                }
                 // firebase Auth
                 // var fireAuth = this.getView().getModel("fbModel").getData().fireAuth;
                 // console.log(fireAuth);
@@ -35,17 +88,9 @@ sap.ui.define([
 
             onLogout: function () {
                 var that = this;
-                // Implement logout functionality
-                // Example with Firebase Auth
-                // firebase.auth().signOut().then(() => {
-                //     // Handle successful logout
-                //     that.oRouter = that.getOwnerComponent().getRouter();
-                //     that.oRouter.navTo("Login");
-                //     // ... navigate to the login page or show a message
-                // }).catch((error) => {
-                //     // Handle logout errors
-                //     // ... show an error message
-                // });
+                localStorage.removeItem('user');
+                that.oRouter = that.getOwnerComponent().getRouter();
+                that.oRouter.navTo("Login");
             },
 
             onFileUpload: function (event) {
@@ -71,31 +116,89 @@ sap.ui.define([
                 }
             },
 
-            onGenerateQRCode: function () {
+            onGenerateQRCode: async function () {
                 // this.checkAuth();
                 // Assuming the data from Excel is in JSON format.
                 var aDataFromExcel = this.jsonData; // Use the actual JSON string here
 
                 var oModel = this.getView().getModel();
-                var aQRData = aDataFromExcel.map(function (oEntry) {
+                // var page = this.getView().byId('page');
+                // page.addContent(new sap.m.VBox({
+                //     id: 'qr0'
+
+                // }),)
+                // var oTable = this.getView().byId("idQRCodeTable");
+                // var oCell = [];
+                // aDataFromExcel.map(function (oEntry, index) {
+                //     var oTemp = new sap.m.ColumnListItem({
+                //         cells: [
+
+                //             new sap.m.Text({
+                //                 text: oEntry["Asset"]
+
+                //             }),
+                //             new sap.m.Text({
+                //                 text: oEntry["Location"]
+
+                //             }),
+                //             new sap.m.VBox({
+                //                 id: 'qr' + index
+
+                //             }),
+                //         ]
+
+                //     });
+                //     oTable.addItem(oTemp);
+
+                // });
+
+                // aDataFromExcel.map(function (oEntry, index) {
+
+
+                // });
+
+
+                this.createData();
+            },
+
+            createData: function () {
+                var aDataFromExcel = this.jsonData; // Use the actual JSON string here
+
+                var oModel = this.getView().getModel();
+                var aQRData = aDataFromExcel.map(function (oEntry, index) {
+                    var qr = new QRious({
+                        value: JSON.stringify(oEntry)
+                    });
+
                     if (oEntry["Location"] && oEntry["Asset"]) {
                         return {
                             locationData: oEntry["Location"],
                             assetData: oEntry["Asset"],
-                            qrCodeUrl: "https://quickchart.io/qr?text=" + encodeURIComponent(oEntry.Location) + '-' + encodeURIComponent(oEntry.Asset)
+                            qrCodeUrl: qr.toDataURL()
                         };
                     } else if (oEntry["Location"] && !oEntry["Asset"]) {
                         return {
                             locationData: oEntry["Location"],
                             assetData: oEntry["Asset"],
-                            qrCodeUrl: "https://quickchart.io/qr?text=" + encodeURIComponent(oEntry.Location)
+                            qrCodeUrl: qr.toDataURL()
+
                         };
                     }
                 });
 
                 oModel.setProperty("/items", aQRData);
             },
-
+            onViewQR: function (oEvent) {
+                var data = oEvent.getSource().getBindingContext().getObject();
+                new QRCode('qrimage', {
+                    text: JSON.stringify(data),
+                    width: 50,
+                    height: 50,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            },
             onPrint: function () {
                 // this.checkAuth();
                 // Get the selected items from the table

@@ -34,7 +34,7 @@ sap.ui.define([
       this.http = "http://";
       this.uri = this.http + this.getHost();
 
-      // fetch('./php/signup.php', {
+      // fetch('./php/index.php', {
       //   method: 'POST',
       //   headers: {
       //     'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ sap.ui.define([
       //   .then(data => {
       //     if (data.success) {
       //       alert("Sign up successful! Please login.");
-      //       // Redirect to the login page upon successful signup
+      //       // Redirect to the login page upon successful index
       //       window.location.href = 'index.html';
       //     } else {
       //       alert("Sign up failed. Please try again.");
@@ -56,7 +56,7 @@ sap.ui.define([
       //   });
 
       $.ajax({
-        url: './php/signup.php',
+        url: './php/index.php',
         type: "POST",
         data: {
           method: "createUsers",
@@ -196,7 +196,7 @@ sap.ui.define([
       var that = this;
       // Load existing users from Firestore and update the table
       $.ajax({
-        url: './php/signup.php',
+        url: './php/index.php',
         type: "POST",
         data: {
           method: "getAllusers",

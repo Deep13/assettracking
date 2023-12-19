@@ -1,8 +1,15 @@
 /* Enter your custom styles here */
 @media print {
-    .page {
-      page-break-after: always;
-      position: relative;
-      height: 100vh;
-    }
+  .page {
+    page-break-after: always;
+    position: relative;
+    height: 100vh;
   }
+}
+
+#qrimage {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  opacity: 0;
+}
