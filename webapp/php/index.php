@@ -115,4 +115,30 @@ $sql ="INSERT INTO `profiles` (`id`, `name`, `username`, `pwd`) VALUES (NULL, '$
         $conn->close();
         }
 
+
+        function deleteUser(){
+            $servername = "localhost";
+            $username = "root";
+            $dbname = "assetTracking";
+            // Create connection
+            $conn = new mysqli($servername, $username,"", $dbname);
+            // Check connection
+                if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+                }
+                $obj = json_decode($_POST["data"]);
+                $username = $obj->username;
+        // Perform query
+        $sql ="DELETE FROM `profiles` WHERE username = '$username'";
+                if(mysqli_query($conn,$sql)){
+                $dataArray[0] = 'Deletion successful';
+                echo json_encode($dataArray);
+                }
+                else{
+                $dataArray[0] = 'Deletion failed';
+                echo json_encode($dataArray);
+                }
+            
+            $conn->close();
+            }
 ?>

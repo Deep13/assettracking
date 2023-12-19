@@ -122,43 +122,29 @@ sap.ui.define([
 
     // Attach an event handler to the "Delete" button in your table
     onDeleteUser: function (oEvent) {
+      var that = this;
       var oTable = this.byId("userTable");
       var oItem = oEvent.getSource().getBindingContext().getObject();
       // Delete the user from Firebase Authentication
       // Assuming you have an "ID" field in your user data
-      var userId = oItem.ID;
-      var fireAuth = this.getView().getModel("fbModel").getData().fireAuth;
-
-      fireAuth.deleteUser(userId).then(function () {
-        var oModel = this.getView().getModel("fbModel").getData();
-        var db = oModel.firestore;
-        // Delete the user from Firestore
-        db.collection("users")
-          .doc(userId)
-          .delete()
-          .then(function () {
-            // User deleted successfully from Firestore
-            sap.m.MessageToast.show("User deleted successfully.");
-          })
-          .catch(function (error) {
-            MessageBox.error("Error deleting user from Firestore: ", error);
-          });
-      })
-        .catch(function (error) {
-          MessageBox.error("Error deleting user from Firebase Authentication: ", error);
-        });
-
-      // Remove the user from the model to update the table
-      var oModel = oTable.getModel();
-      var aUsers = oModel.getProperty("/users");
-      var iIndex = aUsers.findIndex(function (user) {
-        return user.id === userId;
+      var userId = oItem.username;
+      $.ajax({
+        url: './php/index.php',
+        type: "POST",
+        data: {
+          method: "deleteUser",
+          data: JSON.stringify({ username: userId })
+        },
+        dataType: "json",
+        success: function (dataClient) {
+          that.loadUsers();
+          sap.m.MessageToast.show('User deleted successful')
+        },
+        error: function (request, error) {
+          // console.log("fhfj");
+          sap.m.MessageToast.show('User deletion unsuccessful')
+        },
       });
-
-      if (iIndex !== -1) {
-        aUsers.splice(iIndex, 1);
-        oModel.setProperty("/users", aUsers);
-      }
     },
 
     // Attach an event handler to the "Status" switch in your table

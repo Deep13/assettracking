@@ -13,12 +13,24 @@ sap.ui.define([
             onInit: function () {
                 var oModel = new sap.ui.model.json.JSONModel();
                 this.getView().setModel(oModel);
-                var oModel = this.getOwnerComponent().getModel("UserModel");
-                this.getView().setModel(oModel, "UserModel");
+                // var oModel = this.getOwnerComponent().getModel("UserModel");
+                // this.getView().setModel(oModel, "UserModel");
                 this.flag = true;
+                this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                this.oRouter
+                    .getRoute("Main")
+                    .attachPatternMatched(this._handleRouteMatched, this);
+
+            },
+            _handleRouteMatched: function () {
                 this.checkAuth();
             },
-
+            onClearData: function () {
+                var that = this;
+                that.byId("textAreaQRCodeData").setValue('');
+                this.getView().getModel().setProperty("/items", []);
+                this.getView().byId('fileUploader').clear();
+            },
             checkAuth: function () {
                 var that = this;
                 sap.ui.core.BusyIndicator.show();

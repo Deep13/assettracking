@@ -43,6 +43,9 @@
                             width="100%"
                             placeholder="Or, enter your data here, 1 line per QR code in an object of array"
                             rows="6" />
+                        <m:Button
+                            text="Clear All Data"
+                            press="onClearData" />
                     </m:VBox>
 
 

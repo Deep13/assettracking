@@ -40,16 +40,16 @@
             <Column>
               <Text text="Username" />
             </Column>
-            <!-- <Column>
-                  <Text text="Remove User" />
-                </Column> -->
+            <Column>
+              <Text text="Remove User" />
+            </Column>
           </columns>
           <items>
             <ColumnListItem>
               <cells>
                 <Text text="{name}" />
                 <Text text="{username}" />
-                <!-- <Button text="Delete" press="onDeleteUser" /> -->
+                <Button text="Delete" press="onDeleteUser" />
               </cells>
             </ColumnListItem>
           </items>
